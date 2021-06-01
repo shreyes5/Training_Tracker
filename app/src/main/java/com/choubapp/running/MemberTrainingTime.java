@@ -52,44 +52,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import android.hardware.*;
+
 import static com.choubapp.running.CoachDashboardActivity.USER_DATA;
 
-public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener  {
+public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyCallback, SensorEventListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference trackingTraining, userInfoDoc;
-    Boolean mLocationPermissionGranted=false;
+    Boolean mLocationPermissionGranted = false;
     public static final int ERROR_DIALOG_REQUEST = 9000;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9001;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
     private MapView mMapView;
-   // private @ServerTimestamp Date timestamp;
+    // private @ServerTimestamp Date timestamp;
     private GeoPoint userCoordinates;
     private FusedLocationProviderClient mFusedLocationClient;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
-    String trainingID,UserUsername, UserFullname,UserEmail;
+    String trainingID, UserUsername, UserFullname, UserEmail;
     private GoogleMap mGoogleMap;
     private LatLngBounds mMapBoundary;
-    boolean first=false;
-    private int FirstStep, TotalSteps=0;
-    private SensorManager sensorManager; private Sensor sensor;
+    boolean first = false;
+    private int FirstStep, TotalSteps = 0;
+    private SensorManager sensorManager;
+    private Sensor sensor;
     private TextView count;
     boolean activityRunning;
     private Chronometer chronometer;
     private boolean runningchrono = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        trainingID= intent.getStringExtra("TrainingID");
-        UserEmail= intent.getStringExtra("usermail");
-        UserFullname=intent.getStringExtra("userFullName");
-        UserUsername=intent.getStringExtra("username");
+        trainingID = intent.getStringExtra("TrainingID");
+        UserEmail = intent.getStringExtra("usermail");
+        UserFullname = intent.getStringExtra("userFullName");
+        UserUsername = intent.getStringExtra("username");
         //initiate doc references
-        trackingTraining =db.collection("tracking").document(trainingID);
-        userInfoDoc =trackingTraining.collection("Participants").document(UserEmail);
+        trackingTraining = db.collection("tracking").document(trainingID);
+        userInfoDoc = trackingTraining.collection("Participants").document(UserEmail);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_training_time);
         addToParticipants();
@@ -98,15 +100,14 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mMapView =  findViewById(R.id.user_list_map);
+        mMapView = findViewById(R.id.user_list_map);
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
 
-        count =  findViewById(R.id.stepcount);
+        count = findViewById(R.id.stepcount);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
 
 
         chronometer = findViewById(R.id.chronometer);
@@ -115,7 +116,8 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
 
 
     }
-    private void addToParticipants(){
+
+    private void addToParticipants() {
         Map<String, Object> docData = new HashMap<>();
         docData.put("Fullname", UserFullname);
         docData.put("Username", UserUsername);
@@ -123,7 +125,8 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         userInfoDoc.set(docData);
 
     }
-    private void GetStartEndPoints(){
+
+    private void GetStartEndPoints() {
         trackingTraining.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -140,8 +143,9 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         });
 
     }
+
     private void setCameraView() {
-        if (userCoordinates!= null) {
+        if (userCoordinates != null) {
             // surface du map view est 0.2*0.2=0.4
             double bottomBoundary = userCoordinates.getLatitude() - .01;
             double topBoundary = userCoordinates.getLatitude() + .01;
@@ -160,9 +164,9 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    private boolean checkMapServices(){
-        if(isServicesOK()){
-            if(isMapsEnabled()){
+    private boolean checkMapServices() {
+        if (isServicesOK()) {
+            if (isMapsEnabled()) {
                 return true;
             }
         }
@@ -171,9 +175,9 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Pour accéder à l'entraînement, vous devez activer GPS. Voulez-vous l'activer ?")
+        builder.setMessage("To access the training, you must activate GPS. Do you want to activate it?")
                 .setCancelable(false)
-                .setPositiveButton("Oui", (dialog, id) -> {
+                .setPositiveButton("Yes", (dialog, id) -> {
                     Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
                 });
@@ -181,10 +185,10 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         alert.show();
     }
 
-    public boolean isMapsEnabled(){
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -209,22 +213,21 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d("TAG", "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
 
-        if(available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //everything is fine and the user can make map requests
             Log.d("TAG", "isServicesOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
             Log.d("TAG", "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -253,17 +256,17 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         Log.d("TAG", "onActivityResult: called.");
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(mLocationPermissionGranted){
+                if (mLocationPermissionGranted) {
                     System.out.println("2chatroom");
                     getLastKnownLocation();
                     // getChatrooms();
-                }
-                else{
+                } else {
                     getLocationPermission();
                 }
             }
         }
     }
+
     private void getLastKnownLocation() {
         Log.d("TAG", "getLastKnownLocation: called.");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -274,7 +277,7 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful()) {
                     Location location = task.getResult();
-                    if (location!=null) {
+                    if (location != null) {
                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                         Log.d("TAG", "onComplete: latitude: " + geoPoint.getLatitude());
                         Log.d("TAG", "onComplete: longitude: " + geoPoint.getLongitude());
@@ -289,23 +292,24 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
 
     }
 
-    private void startLocationService(){
-        if(!isLocationServiceRunning()){
+    private void startLocationService() {
+        if (!isLocationServiceRunning()) {
             Intent serviceIntent = new Intent(this, LocationService.class);
-            serviceIntent.putExtra("trainingID",trainingID);
+            serviceIntent.putExtra("trainingID", trainingID);
 //        this.startService(serviceIntent);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
                 MemberTrainingTime.this.startForegroundService(serviceIntent);
-            }else{
+            } else {
                 startService(serviceIntent);
             }
         }
     }
+
     private boolean isLocationServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("LocationService".equals(service.service.getClassName())) {
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("LocationService" .equals(service.service.getClassName())) {
                 Log.d("TAG", "isLocationServiceRunning: location service is already running.");
                 return true;
             }
@@ -313,7 +317,8 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         Log.d("TAG", "isLocationServiceRunning: location service is not running.");
         return false;
     }
-    private void saveUserLocation(){
+
+    private void saveUserLocation() {
         Map<String, Object> TrackData = new HashMap<>();
         TrackData.put("Location", userCoordinates);
         TrackData.put("Availability", true);
@@ -325,7 +330,8 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         updateToDatabase();
         updateAvailability();
     }
-    private void updateAvailability(){
+
+    private void updateAvailability() {
         userInfoDoc.update("Availability", false)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("TAG", "DocumentSnapshot successfully updated!");
@@ -335,15 +341,17 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
                 })
                 .addOnFailureListener(e -> Log.w("TAG", "Error updating document", e));
     }
+
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Sortir");
-        builder.setMessage("Voules-vous quitter cet entraînement? ");
-        builder.setPositiveButton("Oui", (dialog, id) -> updateAvailability());
-        builder.setNegativeButton("Annuler", (dialog, id) -> dialog.dismiss());
+        builder.setTitle("Go out\n");
+        builder.setMessage("Do you want to quit this training?");
+        builder.setPositiveButton("Yes", (dialog, id) -> updateAvailability());
+        builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
         builder.show();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -354,14 +362,13 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
         } else {
             Toast.makeText(this, "Count sensor not available!", Toast.LENGTH_LONG).show();
         }
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 // getChatrooms();
                 System.out.println("3chatroom");
                 getLastKnownLocation();
                 mMapView.onResume();
-            }
-            else{
+            } else {
                 getLocationPermission();
             }
         }
@@ -396,6 +403,16 @@ public class MemberTrainingTime extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap map) {
         //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         map.setMyLocationEnabled(true);
         mGoogleMap=map;
         GetStartEndPoints();

@@ -131,9 +131,9 @@ public class CoachMemberlistActivity extends AppCompatActivity {
     public void copyID(View v){
         showID=findViewById(R.id.ShowID);
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("ID de l'équipe", showID.getText());
+        ClipData clip = ClipData.newPlainText("Team ID", showID.getText());
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Votre ID est copié dans le presse-papier", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "ID has been copied to clipboard", Toast.LENGTH_SHORT).show();
 
     }
 }

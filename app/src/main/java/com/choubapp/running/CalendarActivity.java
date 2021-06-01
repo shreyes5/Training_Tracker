@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
-    //Menu Calendrier (Membre)
+
     String TeamID;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CalendarView calendarView;
@@ -42,7 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
         setEvent(TeamID);
         calendarView = findViewById(R.id.calendarView);
 
-        //chercher si la date choisie correspond à une date d'entrainement
+
         calendarView.setOnDayClickListener(eventDay -> {
             Calendar clickedDayCalendar = eventDay.getCalendar();
             String day= String.format("%02d", clickedDayCalendar.get(Calendar.DAY_OF_MONTH));
@@ -50,7 +50,7 @@ public class CalendarActivity extends AppCompatActivity {
             String year=String.valueOf(clickedDayCalendar.get(Calendar.YEAR));
             String selectedDate =day+"-"+month+"-"+year;
             if (TrainingDates.contains(selectedDate)){
-                String title ="Entraînement(s) pour : " +selectedDate;
+                String title ="Workouts for : " +selectedDate;
                 final String[] message = {""};
                 CollectionReference entr = db.collection("Entrainement");
                 // on cherche dans la collection Entrainement les entrainements de la même équipe et durant la date séléctionnée
@@ -64,8 +64,8 @@ public class CalendarActivity extends AppCompatActivity {
                                     message[0] = message[0] + "Entraînement: " + document.get("TrainingName") + "\n"
                                             +  "Description: " +document.get("Description")+ "\n"
                                             + "Date: " + selectedDate + "\n"
-                                            + "Heure: " + document.get("HeureDep") + " --> " + document.get("HeureArr") + "\n"
-                                            + "Lieu: " + document.get("LieuDep") + " --> " + document.get("LieuArr") + "\n"+ "\n"+ "\n";
+                                            + "Hour: " + document.get("HeureDep") + " --> " + document.get("HeureArr") + "\n"
+                                            + "Location: " + document.get("LieuDep") + " --> " + document.get("LieuArr") + "\n"+ "\n"+ "\n";
                                 }
                                 setContentView(R.layout.training_info);
                                 b=1;

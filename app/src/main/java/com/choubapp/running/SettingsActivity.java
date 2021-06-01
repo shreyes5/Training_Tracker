@@ -219,7 +219,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         // verifier si username ne contient pas d'espace
         if (Username.contains(" ")) {
-            DisplayUsername.setError("Ce champ ne doit pas contenir un espace");
+            DisplayUsername.setError("This field must not contain a space\n");
             focusView = DisplayUsername;
             cancel = true;
         }

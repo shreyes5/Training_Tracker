@@ -119,7 +119,7 @@ public class CoachTrainingActivity extends AppCompatActivity {
                         int index = Dates.indexOf(minDate);
                         NextTrainingID = IDs.get(index);
                         String[] SplitedDate = minDate.toString().split(" ", 2);
-                        next.setText("Votre prochain entraînement sera le : \n" + SplitedDate[0] + " à " + SplitedDate[1] + "\n" + "il vous reste :");
+                        next.setText("Your next workout will be on\n : \n" + SplitedDate[0] + " à " + SplitedDate[1] + "\n" + "you still have:");
                      }
                 }
 
@@ -171,9 +171,9 @@ public class CoachTrainingActivity extends AppCompatActivity {
         long elapsedSeconds = different / secondsInMilli;
         countdown=findViewById(R.id.countdown);
         if (elapsedDays!=0) {
-            countdown.setText(elapsedDays + " jours, " + elapsedHours + " heures, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds");
+            countdown.setText(elapsedDays + " days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds");
         }else
-            countdown.setText(elapsedHours+" heures, "+elapsedMinutes+" minutes, "+elapsedSeconds+" seconds");
+            countdown.setText(elapsedHours+" hours, "+elapsedMinutes+" minutes, "+elapsedSeconds+" seconds");
     }
 
 // clique sur le boutton commencer l'entrainment

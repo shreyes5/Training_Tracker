@@ -110,10 +110,10 @@ public class TrainingActivity extends AppCompatActivity {
         //mise à jour du text selon l'existance du proche entrainement
         next=findViewById(R.id.nexttraining);
         if (Dates.isEmpty() && !alreadyStarted) {
-             next.setText("Vous n'avez aucun prochain entraînement");
+             next.setText("You have no next workout");
         }else {
             if(alreadyStarted) {
-                next.setText("Votre entraînement est déjà commencé depuis : \n");
+                next.setText("Your training has already started since\n : \n");
                 minDate = started;
                 startTimer(minDate);
             }else{
@@ -121,7 +121,7 @@ public class TrainingActivity extends AppCompatActivity {
                 int index = Dates.indexOf(minDate);
                 NextTrainingID = IDs.get(index);
                 String[] SplitedDate = minDate.toString().split(" ", 2);
-                next.setText("Votre prochain entraînement sera le : \n" + SplitedDate[0] + " à " + SplitedDate[1] + "\n" + "il vous reste :");
+                next.setText("Your next workout will be on\n : \n" + SplitedDate[0] + " à " + SplitedDate[1] + "\n" + "you still have\n :");
                 startTimer(minDate);
 
             }
@@ -189,9 +189,9 @@ public class TrainingActivity extends AppCompatActivity {
         long elapsedSeconds = different / secondsInMilli;
         countdown=findViewById(R.id.countdown);
         if (elapsedDays!=0) {
-            countdown.setText(elapsedDays + " jours, " + elapsedHours + " heures, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds");
+            countdown.setText(elapsedDays + " days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds");
         }else
-            countdown.setText(elapsedHours+" heures, "+elapsedMinutes+" minutes, "+elapsedSeconds+" seconds");
+            countdown.setText(elapsedHours+" hours, "+elapsedMinutes+" minutes, "+elapsedSeconds+" seconds");
 
     }
 
@@ -207,7 +207,7 @@ public class TrainingActivity extends AppCompatActivity {
                     checkTrainingStatus(trainingStatus);
                 } else {
                     Log.d("TAG", "Document does not exist!");
-                    Toast.makeText(getApplicationContext(), "Votre entraînement n'est encore démarré par votre Coach, Veuillez Patienter ..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Your training has not yet been started by your Coach, Please Wait ..", Toast.LENGTH_LONG).show();
                 }
             } else {
                 Log.d("TAG", "Failed with: ", task.getException());
@@ -229,7 +229,7 @@ public class TrainingActivity extends AppCompatActivity {
             running=false;
         }else{
             if (status.equals("stop"))
-                Toast.makeText(this, "Votre entraînement est déjà arrêté par votre Coach", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Your training has already been stopped by your Coach\n", Toast.LENGTH_SHORT).show();
         }
     }
     // recupere l eamil du coach

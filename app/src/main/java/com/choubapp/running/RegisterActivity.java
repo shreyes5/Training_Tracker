@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
         RadioButton UserSelected=findViewById(selectedid);
         String SelectedUser= UserSelected.getText().toString();
         // si l'utilisateur coche la case membre:
-        if (SelectedUser.equals("Membre")) {
+        if (SelectedUser.equals("Member")) {
             user.put("Team", "");
             // ajouter un nouveau document à la collection member
             db.collection("member")
@@ -169,7 +169,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         // verifier si username contient un espace
         if (username.contains(" ")){
-            mUsernameView.setError("Ce champ ne doit pas contenir un espace");
+            mUsernameView.setError("This field must not contain a space\n");
             focusView = mUsernameView;
             cancel = true;
         }

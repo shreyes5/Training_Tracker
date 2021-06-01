@@ -154,8 +154,8 @@ public class UpdateTraining extends AppCompatActivity {
     // clique sur le boutton de suppression de l'entrainement
     public void deleteTraining(View v) {
         new AlertDialog.Builder(this)
-                .setTitle("Supprimer l'Entraînement")
-                .setMessage("Voulez-vous supprimer cet entraînement? (action irreversible)")
+                .setTitle("Delete Workout\n")
+                .setMessage("Do you want to delete this workout? (action irreversible)")
                 .setPositiveButton("Oui", (dialog, which) -> db.collection("Entrainement").document(docID)
                         .delete()
                         .addOnSuccessListener(aVoid -> {

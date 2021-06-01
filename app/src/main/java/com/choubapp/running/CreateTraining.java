@@ -145,7 +145,7 @@ public class CreateTraining extends AppCompatActivity {
                     Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
                     new AlertDialog.Builder(CreateTraining.this)
                             .setTitle("Succes !")
-                            .setMessage("Votre entraînement a été créé")
+                            .setMessage("Workout Created")
                             .setPositiveButton("Ok", (dialog, which) -> onBackPressed())
                             .show();
                 })

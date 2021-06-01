@@ -165,7 +165,7 @@ public class CoachTrainingTime extends AppCompatActivity  implements OnMapReadyC
         trackingTrainingDoc.update("Status", "stop")
                 .addOnSuccessListener(aVoid -> {
                     Log.d("TAG", "DocumentSnapshot successfully updated!");
-                    Toast.makeText(CoachTrainingTime.this, "Vous avez arrêté votre entraînement", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CoachTrainingTime.this, "You have stopped your training", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), CoachDashboardActivity.class);
                     finish();
                     startActivity(intent);
@@ -231,10 +231,10 @@ public class CoachTrainingTime extends AppCompatActivity  implements OnMapReadyC
     public void onBackPressed() {
         // afficher une fenetre pour confirmer l'arret de l'entrainement lorsqu'on clique sur la boutton de revenir en arrière
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Arrêter l'Entraînement?");
-        builder.setMessage("Voules-vous arrêter cet entraînement pour vous et pour les membres? ");
-        builder.setPositiveButton("Oui", (dialog, id) -> updateTrainingStatus());
-        builder.setNegativeButton("Annuler", (dialog, id) -> dialog.dismiss());
+        builder.setTitle("Stop Training?\n");
+        builder.setMessage("Do you want to stop this training for you and for the members?\n");
+        builder.setPositiveButton("Yes", (dialog, id) -> updateTrainingStatus());
+        builder.setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
         builder.show();
     }
 
@@ -275,9 +275,9 @@ public class CoachTrainingTime extends AppCompatActivity  implements OnMapReadyC
     // fenetre pour activer GPS
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Pour accéder à l'entraînement, vous devez activer GPS. Voulez-vous l'activer ?")
+        builder.setMessage("To access the workout, you must activate GPS. Do you want to activate it?")
                 .setCancelable(false)
-                .setPositiveButton("Oui", (dialog, id) -> {
+                .setPositiveButton("Yes", (dialog, id) -> {
                     Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
                 });

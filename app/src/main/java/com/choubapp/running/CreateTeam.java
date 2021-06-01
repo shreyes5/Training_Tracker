@@ -46,7 +46,7 @@ public class CreateTeam extends AppCompatActivity {
         // generer ID de l'equipe
         teamId= RandomString.getAlphaNumericString(6);
         Map<String, Object> team = new HashMap<>();
-        team.put("Nom Equipe", name);
+        team.put("New Team", name);
         team.put("Email Coach", email);
         team.put("ID", teamId);
         // enregistrer les donnees de l'equipe dans un nouveau document dans la collection Equipe
@@ -54,8 +54,8 @@ public class CreateTeam extends AppCompatActivity {
                 .add(team)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    NewTeam.setText("Votre équipe a été enregistrée"  );
-                    NewTeamId.setText("Son ID est :" +teamId );
+                    NewTeam.setText("Your team has been registered"  );
+                    NewTeamId.setText("Team ID :" +teamId );
                     CopyID.setVisibility(View.VISIBLE);
 
                 })
@@ -66,7 +66,7 @@ public class CreateTeam extends AppCompatActivity {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("ID de l'équipe", teamId);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Votre ID est copié dans le presse-papier", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Your ID is copied to the clipboard", Toast.LENGTH_SHORT).show();
     }
 
     static class RandomString {

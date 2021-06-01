@@ -30,7 +30,7 @@ public class ChatListAdapter extends BaseAdapter {
     private ChildEventListener mListener = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d("onChildadd","un child est ajouté");
+            Log.d("onChildadd","Child added");
             InstantMessage test =(InstantMessage) dataSnapshot.getValue(InstantMessage.class);
             if (test != null && test.getTeamId().equals(teamIdSelected)) {
                 mSnapshotList.add(dataSnapshot);
@@ -40,12 +40,12 @@ public class ChatListAdapter extends BaseAdapter {
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d("onChanged","un child est modifié");
+            Log.d("onChanged","a child is modified");
         }
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Log.d("onChildRemoved","un child est supprimé");
+            Log.d("onChildRemoved","a child is deleted");
 
         }
 
@@ -96,13 +96,13 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        Log.d("getItemId", "J'ai pris l'item id"+position);
+        Log.d("getItemId", "Item ID"+position);
         return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("getView", "J'ai pris l item id"+position);
+        Log.d("getView", "Item ID"+position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -134,7 +134,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     String getDateselected(int position)
     {
-        Log.d("getDateselected", "J'ai pris la date de "+position);
+        Log.d("getDateselected", "Date "+position);
 
         InstantMessage message  = getItem(position);
         Log.d("je retourne", message.getDate());

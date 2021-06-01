@@ -63,7 +63,7 @@ public class TasksActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.d("TAG", "Error getting documents: ", task.getException());
-                        Toast.makeText(TasksActivity.this, "Vous devrez être membre 'une équipe et completer au moins un entraînement", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TasksActivity.this, "You will need to be a member of a team and complete at least one training session", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -105,7 +105,7 @@ public class TasksActivity extends AppCompatActivity {
         if (map.size()==0){
             loading=findViewById(R.id.loading);
             loading.setVisibility(View.GONE);
-            Toast.makeText(this, "Vous n'avez complété aucun entraînement", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You have not completed any training", Toast.LENGTH_SHORT).show();
         }
         // recuperer les entrainements accomplies avec les durées parcourues
         for (int i=0 ; i<map.size(); i++){
